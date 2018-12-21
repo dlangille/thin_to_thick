@@ -187,8 +187,24 @@ This will need to be set in iocage, usually via `iocate set` but the details are
 thin_to_thick /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots/root
 ```
 
-### start the jail
+## start the jail
 
 ```
 iocage start standard
+```
+
+
+
+# Post conversion
+
+You will probably want to the set the old ezjail jail to not run on boot:
+
+```
+ezjail-admin config -r norun snapshots
+```
+
+Similarly, when ready, set the iocage jail to start on boot:
+
+```
+iocage set boot=on snapshots
 ```
