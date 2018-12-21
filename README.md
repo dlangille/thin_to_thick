@@ -148,12 +148,33 @@ $ grep ip4_addr /iocage/jails/snapshots/config.json
     "ip4_addr": "10.55.0.70",
 ```
 
+The above is the minimum you need to set. There may be ip6_addr values to set as well. You can see them in the output of the grep command above.
+
 ### Other jail settings
 
 There are many other jail settings you may need to configure.  Here are a couple:
 
+* hostname
 * /etc/fstab.snapshots
 * /usr/local/etc/ezjail/snapshots
+* devfs rules
+
+#### hostname
+
+If the hostname does not exactly name the jailname, you might want to set that.
+
+Here is the old hostname:
+
+```
+$ grep hostname /usr/local/etc/ezjail/snapshots 
+export jail_snapshots_hostname="snapshots.int.unixathome.org"
+```
+
+We set that via iocage:
+
+```
+iocage set host_hostname=snapshots.int.unixathome.org snapshots
+```
 
 #### /etc/fstab.snapshots
 
@@ -169,7 +190,7 @@ $ cat /etc/fstab.snapshots
 The basejail line isn’t needed in for our situation, because we are using thick jails. If there are other entries, you will
 need to copy them to `/iocage/jails/snapshots/fstab`. Be sure to adjust the pathname accordingly, base on where your iocage jails are located.
 
-### /usr/local/etc/ezjail/snapshots
+#### /usr/local/etc/ezjail/snapshots
 
 ezjail stores most configuration items in /usr/local/etc/ezjail/JAILNAME and in our example, /usr/local/etc/ezjail/snapshots will contain settings we might want to copy over.
 
@@ -180,6 +201,22 @@ export jail_snapshots_parameters="enforce_statfs=0 allow.mount=1 allow.mount.zfs
 ```
 
 This will need to be set in iocage, usually via `iocage set` but the details are outside the scope for this task.
+
+#### devfs rules
+
+If this value is something other then 4, the default, you might want to set it.
+
+```
+$ grep devfs_rule /usr/local/etc/ezjail/snapshots 
+export jail_snapshots_devfs_ruleset="7"
+```
+
+In my case, it was 7
+
+```
+$ sudo iocage set devfs_ruleset=7 snapshots
+Property: devfs_ruleset has been updated to 7
+```
 
 ## run the script
 
