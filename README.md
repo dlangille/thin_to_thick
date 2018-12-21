@@ -190,7 +190,7 @@ thin_to_thick.sh /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots
 ## start the jail
 
 ```
-iocage start standard
+iocage start snapshots
 ```
 
 
