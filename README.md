@@ -5,6 +5,7 @@ A thin jail often uses a nullfs mount to supply the main jail directories.
 
 ezjail uses this approach. This is a typical ezjail basejail:
 
+```
 $ ls -l /usr/jails/newjail
 total 203
 -r--r--r--   1 root  wheel  6197 Apr  4  2015 COPYRIGHT
@@ -26,6 +27,24 @@ drwxrwxrwt   2 root  wheel     2 Dec  4  2012 tmp
 drwxr-xr-x   5 root  wheel    14 Aug 23  2015 usr
 drwxr-xr-x  24 root  wheel    24 Apr  4  2015 var
 $ 
+```
 
 This tool is designed to allow you to copy an existing thin jail into a thick jail,
 ignoring the bits provided by the basejail.
+
+#Usage:
+
+```
+thin_to_thick /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots3/root
+```
+
+where:
+
+```
+/usr/jails/newjail            = example base jail
+/usr/jails/snapshots          = the jail you want to convert
+/iocage/jails/snapshots3/root = the destination of the new thick jail
+                                must already be created
+```
+
+NOTE: neither the src jail nor the dest jail may be running
