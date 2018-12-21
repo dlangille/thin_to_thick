@@ -111,7 +111,7 @@ The release info can be found in the old basejail files via the freebsd-update e
 
 ```
 $ grep USERLAND_VERSION= /usr/jails/basejail/bin/freebsd-version
-USERLAND_VERSION="11.1-RELEASE-p6"
+USERLAND_VERSION="11.2-RELEASE-p7"
 ```
 
 In this case, the release information is already correct.  This edit must be done manually. After update, the new values are.
