@@ -32,7 +32,7 @@ $
 This tool is designed to allow you to copy an existing thin jail into a thick jail,
 ignoring the bits provided by the basejail.
 
-#Usage:
+# Usage:
 
 ```
 thin_to_thick /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots3/root
@@ -48,3 +48,37 @@ where:
 ```
 
 NOTE: neither the src jail nor the dest jail may be running
+
+# Steps for converting a thin jail to a thick jail
+
+In this example, we will assume:
+
+* The thin jail was created by [ezjail](http://erdgeist.org/arts/software/ezjail/)
+* The thick jail will be created using [iocage](https://github.com/iocage/iocage)
+* The thin jail is located at /usr/jails/snapshots
+* The thick jail will be located at /iocage/jails/snapshots
+
+## stop the thin jail
+
+```
+ezjail-admin stop snapshots
+```
+
+## create the thick jail
+
+```
+iocage create --thickjail -r 11.2-RELEASE -n snapshots
+```
+
+## optionally snapshot the new jail
+
+```
+zfs snapshot -r system/iocage/jails/snapshots@clean
+```
+
+The actual filesystem name will most certainly not match the above. `zfs list` will show you the information you need.
+
+## run the script
+
+```
+thin_to_thick /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots/root
