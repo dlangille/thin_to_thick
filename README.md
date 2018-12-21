@@ -179,7 +179,7 @@ In the author's example, he found this:
 export jail_snapshots_parameters="enforce_statfs=0 allow.mount=1 allow.mount.zfs=1"
 ```
 
-This will need to be set in iocage, usually via `iocate set` but the details are outside the scope for this task.
+This will need to be set in iocage, usually via `iocage set` but the details are outside the scope for this task.
 
 ## run the script
 
