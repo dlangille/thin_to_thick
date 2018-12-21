@@ -190,7 +190,7 @@ $ cat /etc/fstab.snapshots
 The basejail line isn’t needed in for our situation, because we are using thick jails. If there are other entries, you will
 need to copy them to `/iocage/jails/snapshots/fstab`. Be sure to adjust the pathname accordingly, base on where your iocage jails are located.
 
-#### 4.3.3 -/usr/local/etc/ezjail/snapshots
+#### 4.3.3 - /usr/local/etc/ezjail/snapshots
 
 ezjail stores most configuration items in /usr/local/etc/ezjail/JAILNAME and in our example, /usr/local/etc/ezjail/snapshots will contain settings we might want to copy over.
 
