@@ -60,13 +60,13 @@ In this example, we will assume:
 * The thin jail is located at /usr/jails/snapshots
 * The thick jail will be located at /iocage/jails/snapshots
 
-## stop the thin jail
+## 1 - stop the thin jail
 
 ```
 ezjail-admin stop snapshots
 ```
 
-## create the thick jail
+## 2 - create the thick jail
 
 ```
 iocage create --thickjail -r 11.2-RELEASE -n snapshots
@@ -76,7 +76,7 @@ The newly created thick jail must be the same release version as the old thin ja
 
 The author was concerned only getting the release name correct and was not concerned by patch levels (e.g. `FreeBSD 11.2-RELEASE-p7`).
 
-## optionally snapshot the new jail
+## 3 - optionally snapshot the new jail
 
 ```
 zfs snapshot -r system/iocage/jails/snapshots@clean
@@ -84,7 +84,7 @@ zfs snapshot -r system/iocage/jails/snapshots@clean
 
 The actual filesystem name will most certainly not match the above. `zfs list` will show you the information you need.
 
-## Populate the iocage config.json file
+## 4 - Populate the iocage config.json file
 
 iocage uses a configuration file using JSON format.  This file is located in the main directory. In our example, that is
 
@@ -105,7 +105,7 @@ There are two important parts to set in this file:
 * release information
 * IP address
 
-### release information
+### 4.1 - release information
 
 The release info can be found in the old basejail files via the freebsd-update executable:
 
@@ -125,7 +125,7 @@ In this case, the release information is already correct.  This edit must be don
 }
 ```
 
-### IP address
+### 4.2 - IP address
 
 The IP addresses for our ezjail jail are in /usr/local/etc/ezjail/snapshots
 
@@ -150,7 +150,7 @@ $ grep ip4_addr /iocage/jails/snapshots/config.json
 
 The above is the minimum you need to set. There may be ip6_addr values to set as well. You can see them in the output of the grep command above.
 
-### Other jail settings
+### 4.3 - Other jail settings
 
 There are many other jail settings you may need to configure.  Here are a couple:
 
@@ -159,7 +159,7 @@ There are many other jail settings you may need to configure.  Here are a couple
 * /usr/local/etc/ezjail/snapshots
 * devfs rules
 
-#### hostname
+#### 4.3.1 - hostname
 
 If the hostname does not exactly name the jailname, you might want to set that.
 
@@ -176,7 +176,7 @@ We set that via iocage:
 iocage set host_hostname=snapshots.int.unixathome.org snapshots
 ```
 
-#### /etc/fstab.snapshots
+#### 4.3.2 - /etc/fstab.snapshots
 
 If ezjil was mounting more than the basejail for your old jail, these can be easily copied into iocage as well.
 
@@ -190,7 +190,7 @@ $ cat /etc/fstab.snapshots
 The basejail line isn’t needed in for our situation, because we are using thick jails. If there are other entries, you will
 need to copy them to `/iocage/jails/snapshots/fstab`. Be sure to adjust the pathname accordingly, base on where your iocage jails are located.
 
-#### /usr/local/etc/ezjail/snapshots
+#### 4.3.3 -/usr/local/etc/ezjail/snapshots
 
 ezjail stores most configuration items in /usr/local/etc/ezjail/JAILNAME and in our example, /usr/local/etc/ezjail/snapshots will contain settings we might want to copy over.
 
@@ -202,7 +202,7 @@ export jail_snapshots_parameters="enforce_statfs=0 allow.mount=1 allow.mount.zfs
 
 This will need to be set in iocage, usually via `iocage set` but the details are outside the scope for this task.
 
-#### devfs rules
+#### 4.3.4 - devfs rules
 
 If this value is something other then 4, the default, you might want to set it.
 
@@ -218,13 +218,13 @@ $ sudo iocage set devfs_ruleset=7 snapshots
 Property: devfs_ruleset has been updated to 7
 ```
 
-## run the script
+## 5 - run the script
 
 ```
 thin_to_thick.sh /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots/root
 ```
 
-## start the jail
+## 6 - start the jail
 
 ```
 iocage start snapshots
@@ -245,3 +245,5 @@ Similarly, when ready, set the iocage jail to start on boot:
 ```
 iocage set boot=on snapshots
 ```
+
+Consider your backup strategy, now that you have two copies, old and new. At some point, delete the old.
