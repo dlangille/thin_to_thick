@@ -184,7 +184,7 @@ This will need to be set in iocage, usually via `iocate set` but the details are
 ## run the script
 
 ```
-thin_to_thick /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots/root
+thin_to_thick.sh /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots/root
 ```
 
 ## start the jail
