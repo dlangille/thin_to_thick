@@ -69,7 +69,7 @@ do
   ${ECHO} ${link}
 done
 
-${RSYNC} --progress -a --links --exclude-from=${TMPFILE2} ${SRC_JAIL} ${DST_JAIL}
+${RSYNC} -a --links --exclude-from=${TMPFILE2} ${SRC_JAIL} ${DST_JAIL}
 
 # cleaning time
 rm ${TMPFILE1} ${TMPFILE2}

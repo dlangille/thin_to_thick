@@ -247,3 +247,14 @@ iocage set boot=on snapshots
 ```
 
 Consider your backup strategy, now that you have two copies, old and new. At some point, delete the old.
+
+Priority: ezjail uses rcorder-type strategies to decide what needs to start
+in what order. If you find no values for this query, you have nothing to do:
+
+```
+grep REQUIRE /usr/local/etc/ezjail/*
+```
+
+Otherwise, you should analyst the REQUIRE and PROVIDE statements you find
+in this directory and use the `iocage set priority` command to determine the
+start order.
