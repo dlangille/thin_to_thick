@@ -37,15 +37,15 @@ ignoring the bits provided by the basejail.
 # Usage:
 
 ```
-thin_to_thick /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots3/root
+thin_to_thick /usr/jails/newjail /usr/jails/myjail /iocage/jails/myjail/root
 ```
 
 where:
 
 ```
 /usr/jails/newjail            = example base jail
-/usr/jails/snapshots          = the jail you want to convert
-/iocage/jails/snapshots3/root = the destination of the new thick jail
+/usr/jails/myjail          = the jail you want to convert
+/iocage/jails/myjail3/root = the destination of the new thick jail
                                 must already be created
 ```
 
@@ -57,19 +57,19 @@ In this example, we will assume:
 
 * The thin jail was created by [ezjail](http://erdgeist.org/arts/software/ezjail/)
 * The thick jail will be created using [iocage](https://github.com/iocage/iocage)
-* The thin jail is located at /usr/jails/snapshots
-* The thick jail will be located at /iocage/jails/snapshots
+* The thin jail is located at /usr/jails/myjail
+* The thick jail will be located at /iocage/jails/myjail
 
 ## 1 - stop the thin jail
 
 ```
-ezjail-admin stop snapshots
+ezjail-admin stop myjail
 ```
 
 ## 2 - create the thick jail
 
 ```
-iocage create --thickjail -r 11.2-RELEASE -n snapshots
+iocage create --thickjail -r 11.2-RELEASE -n myjail
 ```
 
 The newly created thick jail must be the same release version as the old thin jail.
@@ -79,7 +79,7 @@ The author was concerned only getting the release name correct and was not conce
 ## 3 - optionally snapshot the new jail
 
 ```
-zfs snapshot -r system/iocage/jails/snapshots@clean
+zfs snapshot -r system/iocage/jails/myjail@clean
 ```
 
 The actual filesystem name will most certainly not match the above. `zfs list` will show you the information you need.
@@ -89,11 +89,11 @@ The actual filesystem name will most certainly not match the above. `zfs list` w
 iocage uses a configuration file using JSON format.  This file is located in the main directory. In our example, that is
 
 ```
-$ cat /iocage/jails/snapshots/config.json 
+$ cat /iocage/jails/myjail/config.json 
 {
-    "host_hostname": "snapshots",
-    "host_hostuuid": "snapshots",
-    "jail_zfs_dataset": "iocage/jails/snapshots/data",
+    "host_hostname": "myjail",
+    "host_hostuuid": "myjail",
+    "jail_zfs_dataset": "iocage/jails/myjail/data",
     "release": "11.2-RELEASE"
 }
 ```
@@ -118,33 +118,33 @@ In this case, the release information is already correct.  This edit must be don
 
 ```
 {
-    "host_hostname": "snapshots",
-    "host_hostuuid": "snapshots",
-    "jail_zfs_dataset": "iocage/jails/snapshots/data",
+    "host_hostname": "myjail",
+    "host_hostuuid": "myjail",
+    "jail_zfs_dataset": "iocage/jails/myjail/data",
     "release": "11.2-RELEASE-p7"
 }
 ```
 
 ### 4.2 - IP address
 
-The IP addresses for our ezjail jail are in /usr/local/etc/ezjail/snapshots
+The IP addresses for our ezjail jail are in /usr/local/etc/ezjail/myjail
 
 ```
-$ grep ip= /usr/local/etc/ezjail/snapshots
-export jail_snapshots_ip="10.55.0.70"
+$ grep ip= /usr/local/etc/ezjail/myjail
+export jail_myjail_ip="10.55.0.70"
 ```
 
 The new value can be configured via:
 
 ```
-$ sudo iocage set ip4_addr="10.55.0.70" snapshots
+$ sudo iocage set ip4_addr="10.55.0.70" myjail
 Property: ip4_addr has been updated to 10.55.0.70
 ```
 
 The change can be confirmed via this command:
 
 ```
-$ grep ip4_addr /iocage/jails/snapshots/config.json 
+$ grep ip4_addr /iocage/jails/myjail/config.json 
     "ip4_addr": "10.55.0.70",
 ```
 
@@ -155,8 +155,8 @@ The above is the minimum you need to set. There may be ip6_addr values to set as
 There are many other jail settings you may need to configure.  Here are a couple:
 
 * hostname
-* /etc/fstab.snapshots
-* /usr/local/etc/ezjail/snapshots
+* /etc/fstab.myjail
+* /usr/local/etc/ezjail/myjail
 * devfs rules
 
 #### 4.3.1 - hostname
@@ -166,38 +166,38 @@ If the hostname does not exactly name the jailname, you might want to set that.
 Here is the old hostname:
 
 ```
-$ grep hostname /usr/local/etc/ezjail/snapshots 
-export jail_snapshots_hostname="snapshots.int.unixathome.org"
+$ grep hostname /usr/local/etc/ezjail/myjail 
+export jail_myjail_hostname="myjail.int.unixathome.org"
 ```
 
 We set that via iocage:
 
 ```
-iocage set host_hostname=snapshots.int.unixathome.org snapshots
+iocage set host_hostname=myjail.int.unixathome.org myjail
 ```
 
-#### 4.3.2 - /etc/fstab.snapshots
+#### 4.3.2 - /etc/fstab.myjail
 
 If ezjil was mounting more than the basejail for your old jail, these can be easily copied into iocage as well.
 
-Given our example, you want to look in /etc/fstab.snapshots on the jail host.
+Given our example, you want to look in /etc/fstab.myjail on the jail host.
 
 ```
-$ cat /etc/fstab.snapshots
-/usr/jails/basejail /usr/jails/snapshots/basejail nullfs ro 0 0
+$ cat /etc/fstab.myjail
+/usr/jails/basejail /usr/jails/myjail/basejail nullfs ro 0 0
 ```
 
 The basejail line isn’t needed in for our situation, because we are using thick jails. If there are other entries, you will
-need to copy them to `/iocage/jails/snapshots/fstab`. Be sure to adjust the pathname accordingly, base on where your iocage jails are located.
+need to copy them to `/iocage/jails/myjail/fstab`. Be sure to adjust the pathname accordingly, base on where your iocage jails are located.
 
-#### 4.3.3 - /usr/local/etc/ezjail/snapshots
+#### 4.3.3 - /usr/local/etc/ezjail/myjail
 
-ezjail stores most configuration items in /usr/local/etc/ezjail/JAILNAME and in our example, /usr/local/etc/ezjail/snapshots will contain settings we might want to copy over.
+ezjail stores most configuration items in /usr/local/etc/ezjail/JAILNAME and in our example, /usr/local/etc/ezjail/myjail will contain settings we might want to copy over.
 
 In the author's example, he found this:
 
 ```
-export jail_snapshots_parameters="enforce_statfs=0 allow.mount=1 allow.mount.zfs=1"
+export jail_myjail_parameters="enforce_statfs=0 allow.mount=1 allow.mount.zfs=1"
 ```
 
 This will need to be set in iocage, usually via `iocage set` but the details are outside the scope for this task.
@@ -207,27 +207,31 @@ This will need to be set in iocage, usually via `iocage set` but the details are
 If this value is something other then 4, the default, you might want to set it.
 
 ```
-$ grep devfs_rule /usr/local/etc/ezjail/snapshots 
-export jail_snapshots_devfs_ruleset="7"
+$ grep devfs_rule /usr/local/etc/ezjail/myjail 
+export jail_myjail_devfs_ruleset="7"
 ```
 
 In my case, it was 7
 
 ```
-$ sudo iocage set devfs_ruleset=7 snapshots
+$ sudo iocage set devfs_ruleset=7 myjail
 Property: devfs_ruleset has been updated to 7
 ```
 
 ## 5 - run the script
 
+The trailing snapshot on the second parameter is vital.
+
 ```
-thin_to_thick.sh /usr/jails/newjail /usr/jails/snapshots /iocage/jails/snapshots/root
+thin_to_thick.sh /usr/jails/newjail /usr/jails/myjail/ /iocage/jails/myjail/root
 ```
+
+Without it, your jail data will be copied to /iocage/jails/myjail/root/myjail/
 
 ## 6 - start the jail
 
 ```
-iocage start snapshots
+iocage start myjail
 ```
 
 
@@ -237,13 +241,13 @@ iocage start snapshots
 You will probably want to the set the old ezjail jail to not run on boot:
 
 ```
-ezjail-admin config -r norun snapshots
+ezjail-admin config -r norun myjail
 ```
 
 Similarly, when ready, set the iocage jail to start on boot:
 
 ```
-iocage set boot=on snapshots
+iocage set boot=on myjail
 ```
 
 Consider your backup strategy, now that you have two copies, old and new. At some point, delete the old.
