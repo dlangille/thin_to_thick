@@ -1,8 +1,11 @@
 # This is a short cheat sheet I keep in a note file.
-
-I change the JAIL name at the top of the file, then copy/paste all the lines into a
-terminal session.
-
+#
+# I change the JAIL name at the top of the file, then copy/paste all the lines into a
+# terminal session.
+#
+# you might have trouble if the jail name contains a hypen (-) or anything
+# else which ezjail converts to an underscore (_).
+#
 export JAIL=pg01
 grep USERLAND_VERSION= /usr/jails/basejail/bin/freebsd-version
 
