@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# this is a helper function
+# I used it to create all the think jails at once.
+# Adjust -r to suit the version you want.
+
+JAILS=`/usr/sbin/jls name | sort`
+for jail in ${JAILS}
+do
+  echo iocage create --thickjail -r 12.0-RELEASE -n ${jail}
+       iocage create --thickjail -r 12.0-RELEASE -n ${jail}
+done
