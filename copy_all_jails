@@ -3,6 +3,8 @@
 # this is a helper function
 # I used it to create all the think jails at once.
 # Adjust -r to suit the version you want.
+# jls reports only the running jails, so if you don't want them all, 
+# filter them out using: | grep -v
 
 JAILS=`/usr/sbin/jls name | sort`
 for jail in ${JAILS}
