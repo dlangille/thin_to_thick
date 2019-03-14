@@ -9,6 +9,7 @@ grep USERLAND_VERSION= /usr/jails/basejail/bin/freebsd-version
 grep ip= /usr/local/etc/ezjail/${JAIL}
 grep ip= /usr/local/etc/ezjail/${JAIL} | cut -f 2 -d '"'
 
+# NOTE this is not useful for IPv6 addresses for address dynamically assigned such as em0|10.0.0.1
 IPV4=`grep ip= /usr/local/etc/ezjail/${JAIL} | cut -f 2 -d '"'`
 
 sudo iocage set ip4_addr="${IPV4}" ${JAIL}
