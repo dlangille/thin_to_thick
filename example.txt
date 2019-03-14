@@ -1,0 +1,35 @@
+# This is a short cheat sheet I keep in a note file.
+
+I change the JAIL name at the top of the file, then copy/paste all the lines into a
+terminal session.
+
+export JAIL=pg01
+grep USERLAND_VERSION= /usr/jails/basejail/bin/freebsd-version
+
+grep ip= /usr/local/etc/ezjail/${JAIL}
+grep ip= /usr/local/etc/ezjail/${JAIL} | cut -f 2 -d '"'
+
+IPV4=`grep ip= /usr/local/etc/ezjail/${JAIL} | cut -f 2 -d '"'`
+
+sudo iocage set ip4_addr="${IPV4}" ${JAIL}
+
+grep hostname /usr/local/etc/ezjail/${JAIL}
+
+JAIL_HOSTNAME=`grep hostname /usr/local/etc/ezjail/${JAIL} | cut -f 2 -d '"'`
+
+sudo iocage set host_hostname=${JAIL_HOSTNAME} ${JAIL}
+
+cat /etc/fstab.${JAIL}
+
+grep devfs_rule /usr/local/etc/ezjail/${JAIL}
+
+
+
+
+sudo ~/thin_to_thick.sh /usr/jails/newjail /usr/jails/${JAIL}/ /iocage/jails/${JAIL}/root
+
+sudo iocage start ${JAIL}
+
+sudo ezjail-admin config -r norun ${JAIL}
+sudo iocage set boot=on ${JAIL}
+
