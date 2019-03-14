@@ -51,6 +51,10 @@ where:
 
 NOTE: neither the src jail nor the dest jail may be running
 
+# My cheat sheet for the steps describe below
+
+Please see [example.txt](example.txt) for example commands I run based on the steps outlined below.
+
 # Steps for converting a thin jail to a thick jail
 
 In this example, we will assume:
