@@ -73,12 +73,12 @@ ezjail-admin stop myjail
 ## 2 - create the thick jail
 
 ```
-iocage create --thickjail -r 11.2-RELEASE -n myjail
+iocage create --thickjail -r 12.0-RELEASE -n myjail
 ```
 
 The newly created thick jail must be the same release version as the old thin jail.
 
-The author was concerned only getting the release name correct and was not concerned by patch levels (e.g. `FreeBSD 11.2-RELEASE-p7`).
+The author was concerned only getting the release name correct and was not concerned by patch levels (e.g. `FreeBSD 12.0-RELEASE-p7`).
 
 ## 3 - optionally snapshot the new jail
 
@@ -98,7 +98,7 @@ $ cat /iocage/jails/myjail/config.json
     "host_hostname": "myjail",
     "host_hostuuid": "myjail",
     "jail_zfs_dataset": "iocage/jails/myjail/data",
-    "release": "11.2-RELEASE"
+    "release": "12.0-RELEASE"
 }
 ```
 
@@ -115,7 +115,7 @@ The release info can be found in the old basejail files via the freebsd-update e
 
 ```
 $ grep USERLAND_VERSION= /usr/jails/basejail/bin/freebsd-version
-USERLAND_VERSION="11.2-RELEASE-p7"
+USERLAND_VERSION="12.0-RELEASE-p7"
 ```
 
 In this case, the release information is already correct.  This edit must be done manually. After update, the new values are.
@@ -125,7 +125,7 @@ In this case, the release information is already correct.  This edit must be don
     "host_hostname": "myjail",
     "host_hostuuid": "myjail",
     "jail_zfs_dataset": "iocage/jails/myjail/data",
-    "release": "11.2-RELEASE-p7"
+    "release": "12.0-RELEASE-p7"
 }
 ```
 
