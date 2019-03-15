@@ -1,0 +1,34 @@
+# Following on from the first example, if your jail name contains a hypen, ezjail converts
+# that to an underscore.  This is the work flow I used for that situation
+#
+
+export JAIL=local-freebsd-repo
+export JAIL_FIXED=local_freebsd_repo
+grep USERLAND_VERSION= /usr/jails/basejail/bin/freebsd-version
+
+grep ip= /usr/local/etc/ezjail/${JAIL_FIXED}
+grep ip= /usr/local/etc/ezjail/${JAIL_FIXED} | cut -f 2 -d '"'
+
+IPV4=`grep ip= /usr/local/etc/ezjail/${JAIL_FIXED} | cut -f 2 -d '"'`
+
+sudo iocage set ip4_addr="${IPV4}" ${JAIL}
+
+grep hostname /usr/local/etc/ezjail/${JAIL_FIXED}
+
+JAIL_HOSTNAME=`grep hostname /usr/local/etc/ezjail/${JAIL_FIXED} | cut -f 2 -d '"'`
+
+sudo iocage set host_hostname=${JAIL_HOSTNAME} ${JAIL}
+
+cat /etc/fstab.${JAIL_FIXED}
+
+grep devfs_rule /usr/local/etc/ezjail/${JAIL_FIXED}
+
+
+sudo ezjail-admin stop ${JAIL}
+sudo ~/thin_to_thick.sh /usr/jails/newjail /usr/jails/${JAIL}/ /iocage/jails/${JAIL}/root
+
+
+sudo iocage start ${JAIL}
+
+sudo ezjail-admin config -r norun ${JAIL}
+sudo iocage set boot=on ${JAIL}
