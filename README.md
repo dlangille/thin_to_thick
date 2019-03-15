@@ -43,10 +43,10 @@ thin_to_thick /usr/jails/newjail /usr/jails/myjail /iocage/jails/myjail/root
 where:
 
 ```
-/usr/jails/newjail            = example base jail
-/usr/jails/myjail          = the jail you want to convert
-/iocage/jails/myjail3/root = the destination of the new thick jail
-                                must already be created
+/usr/jails/newjail        = example base jail
+/usr/jails/myjail         = the jail you want to convert
+/iocage/jails/myjail/root = the destination of the new thick jail
+                            must already be created
 ```
 
 NOTE: neither the src jail nor the dest jail may be running
