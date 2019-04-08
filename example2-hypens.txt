@@ -1,6 +1,7 @@
 # Following on from the first example, if your jail name contains a hypen, ezjail converts
 # that to an underscore.  This is the work flow I used for that situation
-#
+# JAIL is the name exposed by jls
+# JAIL_FIXED is the name of the ezjail configuration file at /usr/local/etc/ezjail/
 
 export JAIL=local-freebsd-repo
 export JAIL_FIXED=local_freebsd_repo
