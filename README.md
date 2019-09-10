@@ -224,7 +224,7 @@ Property: devfs_ruleset has been updated to 7
 
 ## 5 - run the script
 
-The trailing snapshot on the second parameter is vital.
+The trailing / on the second parameter is vital.
 
 ```
 thin_to_thick.sh /usr/jails/newjail /usr/jails/myjail/ /iocage/jails/myjail/root
