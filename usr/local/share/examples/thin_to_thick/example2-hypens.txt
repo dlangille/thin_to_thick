@@ -26,7 +26,7 @@ grep devfs_rule /usr/local/etc/ezjail/${JAIL_FIXED}
 
 
 sudo ezjail-admin stop ${JAIL}
-sudo ~/thin_to_thick.sh /usr/jails/newjail /usr/jails/${JAIL}/ /iocage/jails/${JAIL}/root
+sudo thin_to_thick /usr/jails/newjail /usr/jails/${JAIL}/ /iocage/jails/${JAIL}/root
 
 
 sudo iocage start ${JAIL}

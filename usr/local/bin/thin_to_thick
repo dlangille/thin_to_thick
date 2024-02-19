@@ -13,8 +13,14 @@ NEW_JAIL=$1
 
 # the source of the old jail, e.g. /usr/jails/snapshots/
 SRC_JAIL=$2
+if [ "$(echo -n $SRC_JAIL | tail -c 1)" != "/" ]
+then
+  echo "You forgot trailing slash of second parameter."
+  echo "It probably should be $SRC_JAIL/"
+  exit 1
+fi
 
-# the destination of the new jail, e.g. /iocage/jails/snapshots2/root/
+# the destination of the new jail, e.g. /iocage/jails/snapshots2/root
 DST_JAIL=$3
 
 if [ ! -d "${NEW_JAIL}"  ]
@@ -69,7 +75,7 @@ do
   ${ECHO} ${link}
 done
 
-${RSYNC} -a --links --exclude-from=${TMPFILE2} ${SRC_JAIL} ${DST_JAIL}
+${RSYNC} -a --exclude-from=${TMPFILE2} ${SRC_JAIL} ${DST_JAIL}
 
 # cleaning time
 rm ${TMPFILE1} ${TMPFILE2}

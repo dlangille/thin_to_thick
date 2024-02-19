@@ -27,13 +27,9 @@ cat /etc/fstab.${JAIL}
 
 grep devfs_rule /usr/local/etc/ezjail/${JAIL}
 
-
-
-
-sudo ~/thin_to_thick.sh /usr/jails/newjail /usr/jails/${JAIL}/ /iocage/jails/${JAIL}/root
+sudo thin_to_thick /usr/jails/newjail /usr/jails/${JAIL}/ /iocage/jails/${JAIL}/root
 
 sudo iocage start ${JAIL}
 
 sudo ezjail-admin config -r norun ${JAIL}
 sudo iocage set boot=on ${JAIL}
-
